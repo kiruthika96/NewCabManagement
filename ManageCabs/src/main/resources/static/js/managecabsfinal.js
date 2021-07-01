@@ -721,30 +721,30 @@ function enterEventInsNum(event){
 
 //Enter Key Press Event for Expiry date field
 
-function enterEventExpDate(event){
-   
-    if(!(document.getElementById("ins-exp-date").value == undefined || document.getElementById("ins-exp-date").value =="") && event.keyCode == 13){
-  		
-  		if(document.getElementById("ins-exp-date").value < currentDate){
-			alert("Invalid expiry date");
-			return false;
-			}
-  		
-        document.getElementById("driv-name").focus(); 
-    }
-   
-    else{
-        
-        if(event.keyCode != 13){
-            document.getElementById("ins-exp-date").focus();
-        }
-        else{
-           
-            alert("Expiry date field cannot be empty");
-            return false;
-        }
-    }   
-}
+//function enterEventExpDate(event){
+//   
+//    if(!(document.getElementById("ins-exp-date").value == undefined || document.getElementById("ins-exp-date").value =="") && event.keyCode == 13){
+//  		
+//  		if(document.getElementById("ins-exp-date").value < currentDate){
+//			alert("Invalid expiry date");
+//			return false;
+//			}
+//  		
+//        document.getElementById("driv-name").focus(); 
+//    }
+//   
+//    else{
+//        
+//        if(event.keyCode != 13){
+//            document.getElementById("ins-exp-date").focus();
+//        }
+//        else{
+//           
+//            alert("Expiry date field cannot be empty");
+//            return false;
+//        }
+//    }   
+//}
 
 
 //Enter Key Press Event for Driver Name
