@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
 
@@ -30,7 +31,8 @@ public class CabInfo {
 	long driverId;
 	String  cabModel;
 	int availableSeats;
-	BigInteger insuranceNumber;
+	String insuranceNumber;
+	//BigDecimal insuranceNumber;
 	LocalDate expiryDate;
 	String  driverName;
 	char isDeleted;
@@ -40,7 +42,7 @@ public class CabInfo {
 	LocalDate modifiedDate;
 	//String status;
 	
-	public CabInfo(String cabModel, int availableSeats, BigInteger insuranceNumber,
+	public CabInfo(String cabModel, int availableSeats, String insuranceNumber,
 			LocalDate expiryDate, String driverName, char isDeleted, String createdBy, String modifiedBy,
 			LocalDate createdDate, LocalDate modifiedDate) {
 		super();

@@ -235,6 +235,7 @@ document.addEventListener("click", function(e) {
         divObj.innerText = arr[i].cabModel;
         divObj1.innerText = arr[i].cabNumber;
         divObj2.innerText = arr[i].availableSeats;
+        
         divObj3.innerText = arr[i].insuranceNumber;
         divObj4.innerText = formatDate(arr[i].expiryDate,1);
         divObj5.innerText = arr[i].driverName;
@@ -413,7 +414,7 @@ l	    }
    "insuranceNumber":insuranceNum,"expiryDate":expDate,"driverName":driverName,"driverId":getDriverId};
    
     xhrSaveCabDetails.open("POST","http://localhost:8080/addCabInfo",true);
-    getDriverId = undefined;
+  
     }
     
  else{ //for updating existing data
@@ -431,7 +432,7 @@ l	    }
    "insuranceNumber":insuranceNum,"expiryDate":expDate,"driverName":driverName,"driverId":driverId};
    
  	 xhrSaveCabDetails.open("PUT","http://localhost:8080/updateCabInfo",true);
- 	 getDriverId = undefined;
+ 	 
  }
  	xhrSaveCabDetails.setRequestHeader("Content-Type","application/json");
  	xhrSaveCabDetails.send(JSON.stringify(data));
@@ -452,6 +453,7 @@ l	    }
    
      var response = this.responseText;
      alert("Cab Details saved successfully");
+       getDriverId = undefined;
      funclear();
    }
    
@@ -461,11 +463,19 @@ l	    }
    alert("Cab number already exist");
    } 
    
+   //ALREADY_REPORTED
+   
+   if(xhrSaveCabDetails.readyState == 4 &&  xhrSaveCabDetails.status == 208){
+   alert("Insurance number already exist");
+   } 
+   
    //FOUND
    
    if(xhrSaveCabDetails.readyState == 4 &&  xhrSaveCabDetails.status == 302){
    alert("Driver already assigned to a cab");
    } 
+   
+   
    
    //location.reload();
    
@@ -579,7 +589,7 @@ function editData(row){
 	document.getElementById("cab-num").disabled = "true";
 	document.getElementById("no-seats").value = seatsAvailable;
 	document.getElementById("insurance-num").value = ins;
-	document.getElementById("ins-exp-date").value = formatDate(exp,1);   //does not required format yyyy/mm/dd
+	document.getElementById("ins-exp-date").value = formatDate(exp,1);   
 	document.getElementById("driv-name").value = driver;
 
 }
@@ -600,7 +610,8 @@ function editData(row){
      var response = this.responseText;
      
 	
-    alert("Cab Details updated successfully");    
+    alert("Cab Details updated successfully");  
+    getDriverId = undefined;  
     funclear();
    }
    

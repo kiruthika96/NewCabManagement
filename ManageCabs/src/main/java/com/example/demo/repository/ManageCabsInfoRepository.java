@@ -1,5 +1,7 @@
 package com.example.demo.repository;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -15,25 +17,19 @@ public interface ManageCabsInfoRepository extends MongoRepository<CabInfo, Integ
 
 	
 	Optional<CabInfo> findByCabNumber(String cabNumber);
+
 	
-	
-	//String findByCabNumberPut(String cabNumber);
-	
-	//to find cabs where the isDeleted flag is 0
 	
 	List<CabInfo> findByIsDeleted(char isDeleted);
-	
-	//boolean findByIsDeleted(char isDeleted);
-	
-//	@Query(value = "{}",fields="{cabNumber:1}")
-//    public Optional<CabInfo> findOnlyCabNumber();
 
 	
-	
-
+	//@Query(value="{driverId:?0,isDeleted:{$nin:[1]}}")
 	Optional<CabInfo> findByDriverId(Long id);
 
 	Optional<CabInfo> findByCabNumberAndIsDeleted(String cabNumber, char c);
+
+
+	Optional<CabInfo> findByInsuranceNumberAndIsDeleted(String insNum, char c);
 	
 
 	

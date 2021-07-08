@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -138,35 +140,47 @@ public class ManageCabsInfoController {
 	    	
 	   
 	    	String cabNumber = cabInfo.getCabNumber();
+	    	Optional<CabInfo> entityCabNum =cabRepo.findByCabNumberAndIsDeleted(cabNumber,'0');
 	    	
-	    	Optional<CabInfo> entity =cabRepo.findByCabNumberAndIsDeleted(cabNumber,'0');
+	    	
+	    	
+	    	String insNum=cabInfo.getInsuranceNumber();
+	    	Optional<CabInfo> entityInsNum =cabRepo.findByInsuranceNumberAndIsDeleted(insNum,'0');
+	    	
+	    	
 	    	
 	    	CabInfo saveCabInfo = null;
 			
 	    	boolean isDriverAvailable = cabInfoBl.isDriverAvailable(cabInfo);
 	    	
-			if(entity.isPresent()) {
+	    	
+			if(entityCabNum.isPresent()) {
 				
 				//throw new NoSuchElementException("CabNumber already exist");
 				return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
 				
-			} else {
+			}
+			else if(entityInsNum.isPresent()) {
+				//throw new NoSuchElementException("Insurance Number already exist");
+				return new ResponseEntity<>(null, HttpStatus.ALREADY_REPORTED);
+			}
+			
+			else {
 				
 				//rohit -- beg
 				//call a business layer method to check if the driver has already been assigned a cab
 			
 				if(isDriverAvailable)
 					saveCabInfo=this.cabInfoDl.addCabInfo(cabInfo);
-				
+					
 				else {
 					//throw new NoSuchElementException("Driver already assigned a cab");
 					return new ResponseEntity<>(null, HttpStatus.FOUND);
 				}
 				//rohit -- end
-				
+				return ResponseEntity.status(HttpStatus.CREATED).body(saveCabInfo);
 			}
 	    	 	
-	    	return ResponseEntity.status(HttpStatus.CREATED).body(saveCabInfo);
 	    }
 	    
 	    

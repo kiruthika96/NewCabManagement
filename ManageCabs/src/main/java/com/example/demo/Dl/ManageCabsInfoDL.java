@@ -9,6 +9,8 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -63,12 +65,25 @@ public class ManageCabsInfoDL {
 		return this.driverRepo.findAll();
 	}
 	
-	//rohit --beg
+	
 	public Optional<CabInfo> findByDriverId(Long id) {
-		//return this.driverRepo.findByDriverId(id);
+		
+		Query driverQuery=new Query();
+		Criteria driverCrite=Criteria.where("driverId").is(id);
+	
+		driverQuery.addCriteria(driverCrite);
+		
+		
+		List<CabInfo> cabDriver=  mongoTemplate.find(driverQuery, CabInfo.class, "cabInfo");
+		
+		if(cabDriver.isEmpty()) {
 		return this.cabRepo.findByDriverId(id);
+		}
+		
+
+		return Optional.of(cabDriver.get(0));
 	}
-	//rohit -- end
+	
 	
 /*	
     public List<String> findAllCabModel() {

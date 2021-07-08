@@ -40,6 +40,7 @@ public class ManageCabsInfoBL {
 		if(entity.isPresent() && !(entity.get().getCabNumber().equals(info.getCabNumber()))  && entity.get().getIsDeleted()=='0')
 			return false;
 		
+		
 		return true;
 	} 
 	
