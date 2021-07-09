@@ -2,7 +2,7 @@ package com.example.demo.bl;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import com.example.demo.Dl.ManageCabsInfoDL;
 import com.example.demo.model.CabInfo;
 import com.example.demo.model.DriverInfo;
 import com.example.demo.repository.ManageCabsInfoRepository;
-import com.example.demo.repository.ManageDriversInfoRepository;
+
 
 @Component
 public class ManageCabsInfoBL {
@@ -20,12 +20,10 @@ public class ManageCabsInfoBL {
 	ManageCabsInfoDL cabInfoDl;
 	
 	@Autowired
-	ManageDriversInfoRepository driverRepo;
-
-	@Autowired
 	ManageCabsInfoRepository cabRepo;
+
 		
-     
+
 	public List<CabInfo> getAllCabDetails() {
 		
 		return this.cabInfoDl.findByIsDeleted('0');
@@ -35,7 +33,7 @@ public class ManageCabsInfoBL {
 	public boolean isDriverAvailable(CabInfo info) {
 		
 		Long id = info.getDriverId();
-		Optional<CabInfo> entity = cabInfoDl.findByDriverId(id);
+		Optional<CabInfo> entity = cabInfoDl.findByDriverId(id); 
 		
 		if(entity.isPresent() && !(entity.get().getCabNumber().equals(info.getCabNumber()))  && entity.get().getIsDeleted()=='0')
 			return false;
@@ -44,17 +42,8 @@ public class ManageCabsInfoBL {
 		return true;
 	} 
 	
-	public CabInfo addCabInfo(CabInfo cabInfo) {
-		return this.cabInfoDl.addCabInfo(cabInfo);
-	}
 
-	public CabInfo editCabDetails(CabInfo updateCabInfo) {
-		
-		return this.cabInfoDl.updateCabDetails(updateCabInfo);
-	}
-
-	public CabInfo deleteCab(String cabNumber) {
-		
+	public CabInfo deleteCab(String cabNumber) {		
 		return this.cabInfoDl.deleteCabByCabNumber(cabNumber);
 	}
 
@@ -62,25 +51,18 @@ public class ManageCabsInfoBL {
 		return this.cabInfoDl.findAllDrivers();
 	}
 
-//	public List<String> getCabModel() {		
-//		return this.cabInfoDl.findAllCabModel();
-//	}
-
 	public List<CabInfo> findByIsDeleted(char c) {
 		return this.cabInfoDl.findByIsDeleted(c);
 	}
 
 
-	public List<CabInfo> getAllCabModels() {
-		
-		return this.cabInfoDl.findByIsDeleted('0');
+	public Optional<CabInfo> getCabNumber(String cabNumber) {
+		return this.cabRepo.findByCabNumberAndIsDeleted(cabNumber,'0');
 	}
 
-	
 
-//	public Optional<CabInfo> findByCabNumber(String cabNumber) {
-//		return this.cabInfoDl.findByCabNumber(cabNumber);
-//	}
-	
+	public Optional<CabInfo> getInsuranceNumber(String insNum) {
+		return this.cabRepo.findByInsuranceNumberAndIsDeleted(insNum, '0');
+	}
 	
 }

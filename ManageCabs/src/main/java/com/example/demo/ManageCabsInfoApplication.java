@@ -21,6 +21,7 @@ public class ManageCabsInfoApplication {
 		SpringApplication.run(ManageCabsInfoApplication.class, args);
 	}
 
+	/*
 	   @Bean
 	    public CommandLineRunner runner() {
 	       
@@ -36,15 +37,15 @@ public class ManageCabsInfoApplication {
 	            @Override
 	            public void run(String... args) throws Exception{
 	           
-//	                Date date1 = new Date (11,28,2024, 0, 0);
-//	                DriverInfo driver1= new DriverInfo(108,"Abu",589672660,"LCNO7550",date1);
-//	                this.driverRepo.save(driver1);
-//	               
-//	                Date date2 = new Date (2022, 12, 21, 0, 0);
-//	                CabInfo cab1= new CabInfo("TN12K1111",driver1,"Tavera",10,123456987,date2,"ragu");
-//	                this.cabRepo.save(cab1);
+	                Date date1 = new Date (11,28,2024, 0, 0);
+                	DriverInfo driver1= new DriverInfo(108,"Abu",589672660,"LCNO7550",date1);
+	                this.driverRepo.save(driver1);
+	               
+	                Date date2 = new Date (2022, 12, 21, 0, 0);
+	                CabInfo cab1= new CabInfo("Tavera","TN 12 KL 1111",10,"12345678901234567890",date2,driver1);
+	                this.cabRepo.save(cab1);
             }
         };
-    }
+    } */
 }
 	

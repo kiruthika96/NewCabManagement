@@ -1,27 +1,23 @@
 package com.example.demo.Dl;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Iterator;
+
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.CabInfo;
 import com.example.demo.model.DriverInfo;
 import com.example.demo.repository.ManageCabsInfoRepository;
 import com.example.demo.repository.ManageDriversInfoRepository;
-import com.mongodb.client.DistinctIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
+
 
 @Service
 public class ManageCabsInfoDL {
@@ -35,10 +31,6 @@ public class ManageCabsInfoDL {
 	@Autowired
     MongoTemplate mongoTemplate;
 
-//	public List<CabInfo> getAllCabInfo() {
-//		
-//		return this.cabRepo.findAll();
-//	}
 
 	public CabInfo addCabInfo(CabInfo cabInfo) {
 		
@@ -61,6 +53,7 @@ public class ManageCabsInfoDL {
 		return this.cabRepo.save(deletedCab);
 	}
 
+	
 	public List<DriverInfo> findAllDrivers() {
 		return this.driverRepo.findAll();
 	}
@@ -69,52 +62,44 @@ public class ManageCabsInfoDL {
 	public Optional<CabInfo> findByDriverId(Long id) {
 		
 		Query driverQuery=new Query();
-		Criteria driverCrite=Criteria.where("driverId").is(id);
-	
-		driverQuery.addCriteria(driverCrite);
 		
+		Criteria driverIdCriteria1=Criteria.where("driverId").is(id);
+		Criteria driverIdCriteria2=Criteria.where("isDeleted").nin('1');
 		
-		List<CabInfo> cabDriver=  mongoTemplate.find(driverQuery, CabInfo.class, "cabInfo");
+		Criteria driverIdCriteria=new Criteria();
+		driverIdCriteria.andOperator(driverIdCriteria1,driverIdCriteria2);
+		
+		driverQuery.addCriteria(driverIdCriteria);
+				
+		List<CabInfo> cabDriver =  mongoTemplate.find(driverQuery, CabInfo.class, "cabInfo");
 		
 		if(cabDriver.isEmpty()) {
-		return this.cabRepo.findByDriverId(id);
+			
+			Query cabDriverQuery=new Query();
+			
+			Criteria cabDriverIdCriteria=Criteria.where("driverId").is(id);
+			
+			cabDriverQuery.addCriteria(cabDriverIdCriteria);
+			
+			List<CabInfo> cabDriverId =  mongoTemplate.find(cabDriverQuery, CabInfo.class, "cabInfo");
+			
+			if(cabDriverId.isEmpty()) {
+				return this.cabRepo.findByDriverId(id);
+			}
+			
+		return Optional.of(cabDriverId.get(0));
 		}
 		
-
 		return Optional.of(cabDriver.get(0));
 	}
 	
+
 	
-/*	
-    public List<String> findAllCabModel() {
-    	
-    	
-        List<String> cabModelList = new ArrayList<>();
-        
-        MongoCollection mongoCollection = mongoTemplate.getCollection("cabInfo");
-        
-       // List<CabInfo> allCabModel=cabRepo.findByIsDeleted('0');
-       DistinctIterable distinctIterable = mongoCollection.distinct("cabModel",String.class);
-        
-        //DistinctIterable distinctIterable = ((MongoCollection) allCabModel).distinct("cabModel",String.class);
-        MongoCursor cursor = distinctIterable.iterator();
-        
-        while (cursor.hasNext()) {
-            String cabModel = (String)cursor.next();
-            cabModelList.add(cabModel);
-        }
-        return cabModelList;
-    }
-*/
 	public List<CabInfo> findByIsDeleted(char c) {
 		
 		return this.cabRepo.findByIsDeleted(c);
 	}
 
-	public Optional<CabInfo> findByCabNumber(String cabNumber) {
-		
-		return this.cabRepo.findByCabNumber(cabNumber);
-	}
 	
 	
 }
