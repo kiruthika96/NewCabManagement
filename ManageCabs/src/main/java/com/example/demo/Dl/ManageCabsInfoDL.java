@@ -31,17 +31,23 @@ public class ManageCabsInfoDL {
 	@Autowired
     MongoTemplate mongoTemplate;
 
-
+	
+	//call save method to save cab details into database
 	public CabInfo addCabInfo(CabInfo cabInfo) {
 		
 		return this.cabRepo.save(cabInfo);
 	}
 
+	
+	//call save method to replace cab details into database
 	public CabInfo updateCabDetails(CabInfo updateCabInfo) {
 		
 		return this.cabRepo.save(updateCabInfo);
 	}
 
+	
+	//call find method to get the cab detail of the cab number
+	// and update isDelete field in '0' to '1'
 	public CabInfo deleteCabByCabNumber(String cabNumber) {
 		
 		Optional<CabInfo> cab = this.cabRepo.findByCabNumber(cabNumber);
@@ -53,48 +59,54 @@ public class ManageCabsInfoDL {
 		return this.cabRepo.save(deletedCab);
 	}
 
-	
+	// call a find all method to find and get all drivers
 	public List<DriverInfo> findAllDrivers() {
 		return this.driverRepo.findAll();
 	}
 	
-	
+	// find the driver availability
 	public Optional<CabInfo> findByDriverId(Long id) {
 		
 		Query driverQuery=new Query();
 		
-		Criteria driverIdCriteria1=Criteria.where("driverId").is(id);
-		Criteria driverIdCriteria2=Criteria.where("isDeleted").nin('1');
+		Criteria driverIdCriteria1=Criteria.where("driverId").is(id);       //   where the driverId match
+		Criteria driverIdCriteria2=Criteria.where("isDeleted").nin('1');	//  where isDeleted field not in '1'
 		
 		Criteria driverIdCriteria=new Criteria();
-		driverIdCriteria.andOperator(driverIdCriteria1,driverIdCriteria2);
+		driverIdCriteria.andOperator(driverIdCriteria1,driverIdCriteria2);	// make one criteria by combining criteria 1 & 2 
 		
-		driverQuery.addCriteria(driverIdCriteria);
-				
-		List<CabInfo> cabDriver =  mongoTemplate.find(driverQuery, CabInfo.class, "cabInfo");
+		driverQuery.addCriteria(driverIdCriteria);							// add criteria to query
+		
+		
+		// find cab details which match for the given criteria in cabInfo collection
+		List<CabInfo> cabDriver =  mongoTemplate.find(driverQuery, CabInfo.class, "cabInfo");     
+		
 		
 		if(cabDriver.isEmpty()) {
 			
 			Query cabDriverQuery=new Query();
 			
-			Criteria cabDriverIdCriteria=Criteria.where("driverId").is(id);
+			Criteria cabDriverIdCriteria=Criteria.where("driverId").is(id);		// where the driverId match
 			
-			cabDriverQuery.addCriteria(cabDriverIdCriteria);
+			cabDriverQuery.addCriteria(cabDriverIdCriteria);					// add criteria to query
 			
+			
+			// find cab details which match for the given criteria in cabInfo collection
 			List<CabInfo> cabDriverId =  mongoTemplate.find(cabDriverQuery, CabInfo.class, "cabInfo");
 			
-			if(cabDriverId.isEmpty()) {
+			if(cabDriverId.isEmpty()) {									// if driverId is not present in the collection
+				
 				return this.cabRepo.findByDriverId(id);
 			}
 			
-		return Optional.of(cabDriverId.get(0));
+		return Optional.of(cabDriverId.get(0));			  
 		}
 		
-		return Optional.of(cabDriver.get(0));
+		return Optional.of(cabDriver.get(0));           
 	}
 	
 
-	
+	// call a find method to find all cab details where isDelete field='0'
 	public List<CabInfo> findByIsDeleted(char c) {
 		
 		return this.cabRepo.findByIsDeleted(c);
