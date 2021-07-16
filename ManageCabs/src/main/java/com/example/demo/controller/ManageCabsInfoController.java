@@ -25,6 +25,7 @@ import com.example.demo.Dl.ManageCabsInfoDL;
 import com.example.demo.bl.ManageCabsInfoBL;
 import com.example.demo.model.CabInfo;
 import com.example.demo.model.DriverInfo;
+import com.example.demo.status.ManageCabsResponseStatus;
 
 
 @RestController
@@ -114,12 +115,12 @@ public class ManageCabsInfoController {
 			if(entityCabNum.isPresent()) {
 				
 				//"CabNumber already exist"
-				return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+				return  ResponseEntity.status(ManageCabsResponseStatus.CABNUMBEREXIST).body(null);
 				
 			}
 			else if(entityInsNum.isPresent()) {
 				//"Insurance Number already exist"
-				return new ResponseEntity<>(null, HttpStatus.ALREADY_REPORTED);
+				return  ResponseEntity.status(ManageCabsResponseStatus.INSURANCENUMBEREXIST).body(null);
 			}
 			
 			else {
@@ -130,7 +131,7 @@ public class ManageCabsInfoController {
 				else {
 					
 					//"Driver already assigned a cab";
-					return new ResponseEntity<>(null, HttpStatus.FOUND);
+					return  ResponseEntity.status(ManageCabsResponseStatus.DRIVEREXIST).body(null);
 				}
 				return ResponseEntity.status(HttpStatus.CREATED).body(saveCabInfo);
 			}
@@ -162,7 +163,7 @@ public class ManageCabsInfoController {
 	    	
 	    	if(updateEntityInsNum.isPresent() && !(updateEntityInsNum.get().getCabNumber().equals(updateCabInfo.getCabNumber()))) {
 	    		// insurance number already exist
-	    		return new ResponseEntity<>(null, HttpStatus.ALREADY_REPORTED);	
+	    		return  ResponseEntity.status(ManageCabsResponseStatus.INSURANCENUMBEREXIST).body(null);	
 	    	}
 	    	else 
 	    	{
@@ -170,7 +171,7 @@ public class ManageCabsInfoController {
 					saveCabInfo=this.cabInfoDl.updateCabDetails(updateCabInfo);
 				}else {
 					// driver already assign to a cab
-					return new ResponseEntity<>(null, HttpStatus.FOUND);	
+					return  ResponseEntity.status(ManageCabsResponseStatus.DRIVEREXIST).body(null);	
 				}
 				
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(saveCabInfo);

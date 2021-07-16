@@ -472,20 +472,20 @@ l	    }
    }
    
    //NOT_ACCEPTABLE
-   
-   if(xhrSaveCabDetails.readyState == 4 &&  xhrSaveCabDetails.status == 406){
+   //Cab number exit
+   if(xhrSaveCabDetails.readyState == 4 &&  xhrSaveCabDetails.status == 777){
    alert("Cab number already exist");
    } 
    
    //ALREADY_REPORTED
    
-   if(xhrSaveCabDetails.readyState == 4 &&  xhrSaveCabDetails.status == 208){
+   if(xhrSaveCabDetails.readyState == 4 &&  xhrSaveCabDetails.status == 888){
    alert("Insurance number already exist");
    } 
    
    //FOUND
    
-   if(xhrSaveCabDetails.readyState == 4 &&  xhrSaveCabDetails.status == 302){
+   if(xhrSaveCabDetails.readyState == 4 &&  xhrSaveCabDetails.status == 666){
    alert("Driver already assigned to a cab");
    } 
    
@@ -552,7 +552,7 @@ function editData(row){
    
    //FOUND
    
-   if (xhrSaveCabDetails.readyState == 4 &&  xhrSaveCabDetails.status == 302) {
+   if (xhrSaveCabDetails.readyState == 4 &&  xhrSaveCabDetails.status == 666) {
    
    alert("Driver already exist");
    location.reload();
@@ -561,7 +561,7 @@ function editData(row){
     
     //ALREADY_REPORTED
    
-   if(xhrSaveCabDetails.readyState == 4 &&  xhrSaveCabDetails.status == 208){
+   if(xhrSaveCabDetails.readyState == 4 &&  xhrSaveCabDetails.status == 888){
    alert("Insurance number already exist");
    } 
     
