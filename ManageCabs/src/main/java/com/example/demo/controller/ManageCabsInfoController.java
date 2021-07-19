@@ -103,7 +103,7 @@ public class ManageCabsInfoController {
 
 	    	
 	    	//call a business layer method to check if the insurance number is already given to any cab
-	    	boolean isInsuranceAvailable=cabInfoBl.getInsuranceNum(cabInfo) ;
+	    	boolean isInsuranceAvailable=cabInfoBl.getInsuranceNum(cabInfo);
 	    	
 			
 	    	//call a business layer method to check if the driver has already been assigned a cab
