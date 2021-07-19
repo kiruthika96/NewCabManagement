@@ -42,7 +42,7 @@ public class ManageCabsInfoController {
 		@GetMapping(path="/all/cabModel")
 	    public ResponseEntity<Set<String>> getAllCabModels()
 	    {
-	    	List<CabInfo> cabInfo =this.cabInfoBl.getAllCabModels('0');
+	    	List<CabInfo> cabInfo =this.cabInfoBl.getAllCabModels('0')  ;
 	 
 	    	Set<String> cabModel=new HashSet<>();
 	    	
@@ -117,7 +117,7 @@ public class ManageCabsInfoController {
 				return  ResponseEntity.status(ManageCabsResponseStatus.CABNUMBEREXIST).body(null);
 				
 			}
-			//else if(entityInsNum.isPresent()) 
+			
 			else if(isInsuranceAvailable)
 			{
 				//"Insurance Number already exist"
