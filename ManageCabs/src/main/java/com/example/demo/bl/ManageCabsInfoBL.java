@@ -61,13 +61,21 @@ public class ManageCabsInfoBL {
 	//call a DL method to find and return the cab detail that matched a
 	//to the cab number & isDeleted field '0'
 	public Optional<CabInfo> getCabNumber(String cabNumber) {
-		return this.cabRepo.findByCabNumberAndIsDeleted(cabNumber,'0');
+		return this.cabInfoDl.findByCabNumberAndIsDeleted(cabNumber,'0');
 	}
 
 	//call a DL method to find and return the cab detail that matched 
 	//to the insurance number & isDeleted field '0'
-	public Optional<CabInfo> getInsuranceNumber(String insNum) {
-		return this.cabRepo.findByInsuranceNumberAndIsDeleted(insNum, '0');
+	public boolean getInsuranceNum(CabInfo cabInfoInsNum) {
+		
+			String InsNum=cabInfoInsNum.getInsuranceNumber();
+	    	Optional<CabInfo> EntityInsNum =cabInfoDl.findByInsuranceNumberAndIsDeleted(InsNum, '0');
+    	
+    	if(EntityInsNum.isPresent() && !(EntityInsNum.get().getCabNumber().equals(cabInfoInsNum.getCabNumber()))) 
+    	{
+		return true;
+    	}
+    	return false;
 	}
 	
 }

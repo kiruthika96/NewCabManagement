@@ -69,7 +69,7 @@ public class ManageCabsInfoDL {
 		
 		Query driverQuery=new Query();
 		
-		Criteria driverIdCriteria1=Criteria.where("driverId").is(id);       //   where the driverId match
+		Criteria driverIdCriteria1=Criteria.where("driverId").is(id);       //   where the driverId matched
 		Criteria driverIdCriteria2=Criteria.where("isDeleted").nin('1');	//  where isDeleted field not in '1'
 		
 		Criteria driverIdCriteria=new Criteria();
@@ -86,7 +86,7 @@ public class ManageCabsInfoDL {
 			
 			Query cabDriverQuery=new Query();
 			
-			Criteria cabDriverIdCriteria=Criteria.where("driverId").is(id);		// where the driverId match
+			Criteria cabDriverIdCriteria=Criteria.where("driverId").is(id);		// where the driverId matched
 			
 			cabDriverQuery.addCriteria(cabDriverIdCriteria);					// add criteria to query
 			
@@ -110,6 +110,18 @@ public class ManageCabsInfoDL {
 	public List<CabInfo> findByIsDeleted(char c) {
 		
 		return this.cabRepo.findByIsDeleted(c);
+	}
+
+	// call a find method to find cab details where cab number and isDeleted are matched
+	public Optional<CabInfo> findByCabNumberAndIsDeleted(String cabNumber, char c) {
+		
+		return this.cabRepo.findByCabNumberAndIsDeleted(cabNumber, c);
+	}
+
+	// call a find method to find cab details where insurance number and isDeleted are matched
+	public Optional<CabInfo> findByInsuranceNumberAndIsDeleted(String insNum, char c) {
+		
+		return this.cabRepo.findByInsuranceNumberAndIsDeleted(insNum, c);
 	}
 
 	

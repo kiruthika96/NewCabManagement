@@ -101,16 +101,15 @@ public class ManageCabsInfoController {
 	    	String cabNumber = cabInfo.getCabNumber();
 	    	Optional<CabInfo> entityCabNum=cabInfoBl.getCabNumber(cabNumber);
 
-	    	//call a BL method to get cab details if cab insurance number already have cab details
-	    	String insNum=cabInfo.getInsuranceNumber();
-	    	Optional<CabInfo> entityInsNum =cabInfoBl.getInsuranceNumber(insNum); 	
 	    	
+	    	//call a business layer method to check if the insurance number is already given to any cab
+	    	boolean isInsuranceAvailable=cabInfoBl.getInsuranceNum(cabInfo);
 	    	
-	    	CabInfo saveCabInfo = null;
 			
 	    	//call a business layer method to check if the driver has already been assigned a cab
 	    	boolean isDriverAvailable = cabInfoBl.isDriverAvailable(cabInfo);
 	    	
+	    	CabInfo saveCabInfo = null;
 	    	
 			if(entityCabNum.isPresent()) {
 				
@@ -118,9 +117,13 @@ public class ManageCabsInfoController {
 				return  ResponseEntity.status(ManageCabsResponseStatus.CABNUMBEREXIST).body(null);
 				
 			}
-			else if(entityInsNum.isPresent()) {
+			//else if(entityInsNum.isPresent()) 
+			else if(isInsuranceAvailable)
+			{
 				//"Insurance Number already exist"
+
 				return  ResponseEntity.status(ManageCabsResponseStatus.INSURANCENUMBEREXIST).body(null);
+				
 			}
 			
 			else {
@@ -130,7 +133,7 @@ public class ManageCabsInfoController {
 					
 				else {
 					
-					//"Driver already assigned a cab";
+					//"Driver already assigned a cab";			
 					return  ResponseEntity.status(ManageCabsResponseStatus.DRIVEREXIST).body(null);
 				}
 				return ResponseEntity.status(HttpStatus.CREATED).body(saveCabInfo);
@@ -151,17 +154,16 @@ public class ManageCabsInfoController {
 	    	CabInfo modifiedDate=updateCabInfo;
 	    	modifiedDate.setModifiedDate(LocalDate.now());
 	    	
-	    	// call a BL method to get cab detail if insurance number have a cab detail
-	    	String updateInsNum=updateCabInfo.getInsuranceNumber();
-	    	Optional<CabInfo> updateEntityInsNum =cabInfoBl.getInsuranceNumber(updateInsNum);
+	    	//call a business layer method to check if the insurance number is already given to any cab
+	    	boolean isInsuranceAvailable=cabInfoBl.getInsuranceNum(updateCabInfo);
 	    	
-	    	
-	    	CabInfo saveCabInfo = null;
-	    	
+	    		    	
 	    	//call a business layer method to check if the driver has already been assigned a cab
 	    	boolean isDriverAvailable = cabInfoBl.isDriverAvailable(updateCabInfo);
 	    	
-	    	if(updateEntityInsNum.isPresent() && !(updateEntityInsNum.get().getCabNumber().equals(updateCabInfo.getCabNumber()))) {
+	    	CabInfo saveCabInfo = null;
+
+	    	if(isInsuranceAvailable) {
 	    		// insurance number already exist
 	    		return  ResponseEntity.status(ManageCabsResponseStatus.INSURANCENUMBEREXIST).body(null);	
 	    	}

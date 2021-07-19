@@ -471,19 +471,19 @@ l	    }
      //location.reload();
    }
    
-   //NOT_ACCEPTABLE
    //Cab number exit
+   
    if(xhrSaveCabDetails.readyState == 4 &&  xhrSaveCabDetails.status == 777){
    alert("Cab number already exist");
    } 
    
-   //ALREADY_REPORTED
+   //Insurance number exist
    
    if(xhrSaveCabDetails.readyState == 4 &&  xhrSaveCabDetails.status == 888){
    alert("Insurance number already exist");
    } 
    
-   //FOUND
+   //Driver exist
    
    if(xhrSaveCabDetails.readyState == 4 &&  xhrSaveCabDetails.status == 666){
    alert("Driver already assigned to a cab");
@@ -550,7 +550,7 @@ function editData(row){
     
    }
    
-   //FOUND
+   //Driver exist
    
    if (xhrSaveCabDetails.readyState == 4 &&  xhrSaveCabDetails.status == 666) {
    
@@ -559,7 +559,7 @@ function editData(row){
    
    }
     
-    //ALREADY_REPORTED
+    //Insurance number exist
    
    if(xhrSaveCabDetails.readyState == 4 &&  xhrSaveCabDetails.status == 888){
    alert("Insurance number already exist");
