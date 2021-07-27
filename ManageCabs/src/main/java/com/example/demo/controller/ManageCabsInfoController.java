@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 
@@ -10,10 +11,10 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,11 +26,12 @@ import com.example.demo.Dl.ManageCabsInfoDL;
 import com.example.demo.bl.ManageCabsInfoBL;
 import com.example.demo.model.CabInfo;
 import com.example.demo.model.DriverInfo;
+import com.example.demo.repository.ManageCabsInfoRepository;
 import com.example.demo.status.ManageCabsResponseStatus;
 
 
 @RestController
-
+@CrossOrigin("*")
 public class ManageCabsInfoController {
 	 
 	@Autowired
@@ -38,11 +40,14 @@ public class ManageCabsInfoController {
 	@Autowired
 	ManageCabsInfoDL cabInfoDl;
 	
+	@Autowired
+	ManageCabsInfoRepository cabRepo;
+	
 		//call a business layer method to get List of cabModels and return unique set of cab models
 		@GetMapping(path="/all/cabModel")
 	    public ResponseEntity<Set<String>> getAllCabModels()
 	    {
-	    	List<CabInfo> cabInfo =this.cabInfoBl.getAllCabModels('0')  ;
+	    	List<CabInfo> cabInfo =this.cabInfoBl.getAllCabModels(0);
 	 
 	    	Set<String> cabModel=new HashSet<>();
 	    	
@@ -56,8 +61,7 @@ public class ManageCabsInfoController {
 	    	return ResponseEntity.status(HttpStatus.OK).body(cabModel);
 	    }
 	
-		
-		
+				
 		// call a business layer method to get & return list of driver details
 		@GetMapping(path="/all/driverInfo")
 	    
@@ -79,22 +83,20 @@ public class ManageCabsInfoController {
 	    	
 	        return ResponseEntity.status(HttpStatus.OK).body(cabInfo);
 	    }
-	        
-	    
-	    
+	        	    
 	    
 	    //call a BL method to  add new cab into the database
 	    @PostMapping(path="/addCabInfo")
 	    public ResponseEntity<CabInfo> addCabDetails(@RequestBody CabInfo cabInfo){
 	    	
 	    	CabInfo reqCab = cabInfo;
-	    	reqCab.setIsDeleted('0');
+	    	reqCab.setIsDeleted(0);
 	    	
 	    	CabInfo createdBy=cabInfo;
 	    	createdBy.setCreatedBy("Admin");
 	    	
 	    	CabInfo createdDate=cabInfo;
-	    	createdDate.setCreatedDate(LocalDate.now());
+	    	createdDate.setCreatedDate(LocalDateTime.now());
 	    	
 	      	
 	    	//call a BL method to get cab details if cab number already have cab details
@@ -142,18 +144,32 @@ public class ManageCabsInfoController {
 	    }
 	    
 	    //call a BL method to update and return the cab detail
-		@PutMapping(path="/updateCabInfo")
-		public ResponseEntity<CabInfo> editCabDetails(@RequestBody CabInfo updateCabInfo)
+		//@PutMapping(path="/updateCabInfo")
+		@PutMapping(path="/updateCabInfo/{cabNumber}")
+		public ResponseEntity<CabInfo> editCabDetails(@PathVariable("cabNumber") String cabNumber,@RequestBody CabInfo updateCabInfo)
 		{
-	    	CabInfo isDeleted = updateCabInfo;
-	    	isDeleted.setIsDeleted('0');
+			CabInfo cab = this.cabRepo.findByCabNumber(cabNumber).get();
+			
+			int isDeleted=cab.getIsDeleted();
+			String createdBy=cab.getCreatedBy();
+			LocalDateTime createdTime=cab.getCreatedDate();
+			
+	    	CabInfo isDeletedUpdate = updateCabInfo;
+	    	isDeletedUpdate.setIsDeleted(isDeleted);
+			
+	    	CabInfo createdByUpdate = updateCabInfo;
+	    	createdByUpdate.setCreatedBy(createdBy);
+	    	
+	    	CabInfo createdDateUpdate = updateCabInfo;
+	    	createdDateUpdate.setCreatedDate(createdTime);
 	    	
 	    	CabInfo modifiedBy=updateCabInfo;
 	    	modifiedBy.setModifiedBy("Admin");
 	    	
 	    	CabInfo modifiedDate=updateCabInfo;
-	    	modifiedDate.setModifiedDate(LocalDate.now());
+	    	modifiedDate.setModifiedDate(LocalDateTime.now());
 	    	
+						
 	    	//call a business layer method to check if the insurance number is already given to any cab
 	    	boolean isInsuranceAvailable=cabInfoBl.getInsuranceNum(updateCabInfo);
 	    	
@@ -190,6 +206,15 @@ public class ManageCabsInfoController {
 	    	
 	    	return ResponseEntity.status(HttpStatus.OK).body(cabInfo);
 	    }
-	    	       
+	    
+	    
+	    @GetMapping("/cab")
+	    public ResponseEntity<List<CabInfo>>findAll1(@Param("limit")int limit,@Param("skip")int skip){
+	       
+	        List<CabInfo> cabList=cabInfoDl.addDAO(limit, skip);
+	       return ResponseEntity.ok(cabList);
+	      
+	    }
+	    
 	    
 }

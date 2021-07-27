@@ -70,14 +70,14 @@ document.getElementById("pills-managecabs-tab").addEventListener('click',functio
  event.preventDefault();
   xhrDriverInfo.open("GET","http://localhost:8080/all/driverInfo",true);
          
-            xhrDriverInfo.onreadystatechange=driverInfoProcessResponse;
+            xhrDriverInfo.onreadystatechange=cabDriverInfoProcessResponse;
             xhrDriverInfo.send(null);
     
  });
  
  var driverDetails;
     
-    function driverInfoProcessResponse(){
+    function cabDriverInfoProcessResponse(){
             if(xhrDriverInfo.readyState == 4 && xhrDriverInfo.status == 200){ 
  
         
@@ -236,10 +236,10 @@ document.addEventListener("click", function(e) {
                
         divObj.innerText = arr[i].cabModel;
         divObj1.innerText = arr[i].cabNumber;
-        divObj2.innerText = arr[i].availableSeats;
+        divObj2.innerText = arr[i].totalSeats;
         
         divObj3.innerText = arr[i].insuranceNumber;
-        divObj4.innerText = formatDate(arr[i].expiryDate,1);
+        divObj4.innerText = formatDate(arr[i].insuranceExpiryDate,1);
         divObj5.innerText = arr[i].driverName;
         divObj6.innerHTML="<a href='#' title='Edit' class='actions-image'><img src='images/edit.svg' alt='edit-icon' onclick='editData(this)'/></a><a href='#' title='Delete' class='actions2-image'><img src='images/delete.svg' onclick='deleteData(this)' alt='delete-icon' data-toggle='modal' data-target='#manage-pop' /></a>";
         divObj7.innerText=arr[i].driverId;
@@ -404,7 +404,7 @@ l	    }
   
   var cabModel=document.getElementById("cab-Model-Dropdown").value;
   var cabNumber=document.getElementById("cab-num").value;
-  var availableSeats=document.getElementById("no-seats").value;
+  var totalSeats=document.getElementById("no-seats").value;
   var insuranceNum=document.getElementById("insurance-num").value;
   var expDate=document.getElementById("ins-exp-date").value;
   var driverName=document.getElementById("driv-name").value;
@@ -419,8 +419,8 @@ l	    }
 		alert("select from given list");
 		return false;
 	}
-	var data = {"cabModel":cabModel,"cabNumber":cabNumber,"availableSeats":availableSeats,
-   "insuranceNumber":insuranceNum,"expiryDate":expDate,"driverName":driverName,"driverId":getDriverId};
+	var data = {"cabModel":cabModel,"cabNumber":cabNumber,"totalSeats":totalSeats,
+   "insuranceNumber":insuranceNum,"insuranceExpiryDate":expDate,"driverName":driverName,"driverId":getDriverId};
    
     xhrSaveCabDetails.open("POST","http://localhost:8080/addCabInfo",true);
   
@@ -431,7 +431,7 @@ l	    }
 	if(driverName!=driver) // || driverId==driverId && driverName!= driver)
 	{
 		if(getDriverId==undefined){
-			alert("select from given list");
+			alert("select driver from given list");
 			return false;
 		}
 		else{
@@ -440,10 +440,10 @@ l	    }
 		
 	}
 		
- 	var data = {"cabModel":cabModel,"cabNumber":cabNumber,"availableSeats":availableSeats,
-   "insuranceNumber":insuranceNum,"expiryDate":expDate,"driverName":driverName,"driverId":driverId};
+ 	var data = {"cabModel":cabModel,"cabNumber":cabNumber,"totalSeats":totalSeats,
+   "insuranceNumber":insuranceNum,"insuranceExpiryDate":expDate,"driverName":driverName,"driverId":driverId};
    
- 	 xhrSaveCabDetails.open("PUT","http://localhost:8080/updateCabInfo",true);
+ 	 xhrSaveCabDetails.open("PUT","http://localhost:8080/updateCabInfo/"+cabNumber,true);
  	 
  }
  
@@ -547,7 +547,6 @@ function editData(row){
     getDriverId = undefined;  
     //location.reload();
     funclear();
-    
    }
    
    //Driver exist
@@ -580,13 +579,16 @@ function funclear()
                 document.getElementById("cab-Model-Dropdown").value="";
                 Reset();
                 document.getElementById("cab-num").value="";
-                //document.getElementById("cab-num").disabled="true";
+                document.getElementById("cab-num").disabled="";
                 document.getElementById("no-seats").value="";
                 document.getElementById("insurance-num").value="";
                 document.getElementById("ins-exp-date").value=true;
                 document.getElementById("driv-name").value="";
                 
-                location.reload();
+                //document.location.reload(true);
+                //self.location.assign(window.location);
+    //location.replace(self.location.href)
+
             }
 
 function Reset() {
@@ -629,7 +631,7 @@ var delId;
      delrow.remove(); //tr0
      alert("Cab Details deleted successfully");
    }
-   location.reload();
+   //location.reload();
  }
 
 function deleteData(row){

@@ -1,7 +1,8 @@
 package com.example.demo.Dl;
 
 import java.time.LocalDate;
-
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,21 +48,22 @@ public class ManageCabsInfoDL {
 
 	
 	//call find method to get the cab detail of the cab number
-	// and update isDelete field in '0' to '1'
+	// and update isDelete field in 0 to 1
 	public CabInfo deleteCabByCabNumber(String cabNumber) {
 		
 		Optional<CabInfo> cab = this.cabRepo.findByCabNumber(cabNumber);
+		
 		CabInfo deletedCab = cab.get();
-		deletedCab.setIsDeleted('1');
+		deletedCab.setIsDeleted(1);
 		deletedCab.setModifiedBy("Admin");
-
-		deletedCab.setModifiedDate(LocalDate.now());
+		deletedCab.setModifiedDate(LocalDateTime.now());
+		
 		return this.cabRepo.save(deletedCab);
 	}
 
 	// call a find all method to find and get all drivers
-	public List<DriverInfo> findAllDrivers() {
-		return this.driverRepo.findAll();
+	public List<DriverInfo> findAllDrivers(int isDeleted) {
+		return this.driverRepo.findByIsDeleted(isDeleted);
 	}
 	
 	// find the driver availability
@@ -70,7 +72,7 @@ public class ManageCabsInfoDL {
 		Query driverQuery=new Query();
 		
 		Criteria driverIdCriteria1=Criteria.where("driverId").is(id);       //   where the driverId matched
-		Criteria driverIdCriteria2=Criteria.where("isDeleted").nin('1');	//  where isDeleted field not in '1'
+		Criteria driverIdCriteria2=Criteria.where("isDeleted").nin(1);		//  where isDeleted field not in 1
 		
 		Criteria driverIdCriteria=new Criteria();
 		driverIdCriteria.andOperator(driverIdCriteria1,driverIdCriteria2);	// make one criteria by combining criteria 1 & 2 
@@ -79,7 +81,7 @@ public class ManageCabsInfoDL {
 		
 		
 		// find cab details which match for the given criteria in cabInfo collection
-		List<CabInfo> cabDriver =  mongoTemplate.find(driverQuery, CabInfo.class, "cabInfo");     
+		List<CabInfo> cabDriver =  mongoTemplate.find(driverQuery, CabInfo.class, "CabInfo");     
 		
 		
 		if(cabDriver.isEmpty()) {
@@ -92,7 +94,7 @@ public class ManageCabsInfoDL {
 			
 			
 			// find cab details which match for the given criteria in cabInfo collection
-			List<CabInfo> cabDriverId =  mongoTemplate.find(cabDriverQuery, CabInfo.class, "cabInfo");
+			List<CabInfo> cabDriverId =  mongoTemplate.find(cabDriverQuery, CabInfo.class, "CabInfo");
 			
 			if(cabDriverId.isEmpty()) {									// if driverId is not present in the collection
 				
@@ -106,22 +108,34 @@ public class ManageCabsInfoDL {
 	}
 	
 
-	// call a find method to find all cab details where isDelete field='0'
-	public List<CabInfo> findByIsDeleted(char c) {
+	// call a find method to find all cab details where isDelete field=0
+	public List<CabInfo> findByIsDeleted(int i) {
 		
-		return this.cabRepo.findByIsDeleted(c);
+		return this.cabRepo.findByIsDeleted(i);
 	}
 
 	// call a find method to find cab details where cab number and isDeleted are matched
-	public Optional<CabInfo> findByCabNumberAndIsDeleted(String cabNumber, char c) {
+	public Optional<CabInfo> findByCabNumberAndIsDeleted(String cabNumber, int i) {
 		
-		return this.cabRepo.findByCabNumberAndIsDeleted(cabNumber, c);
+		return this.cabRepo.findByCabNumberAndIsDeleted(cabNumber, i);
 	}
 
 	// call a find method to find cab details where insurance number and isDeleted are matched
-	public Optional<CabInfo> findByInsuranceNumberAndIsDeleted(String insNum, char c) {
+	public Optional<CabInfo> findByInsuranceNumberAndIsDeleted(String insNum, int i) {
 		
-		return this.cabRepo.findByInsuranceNumberAndIsDeleted(insNum, c);
+		return this.cabRepo.findByInsuranceNumberAndIsDeleted(insNum, i);
+	}
+
+
+	public List<CabInfo> addDAO(int limit, int skipCount) {
+		
+	   // List<CabInfo> list = new ArrayList<>();
+	    Query query=new Query();
+	    query.limit(limit).skip(skipCount);
+	    
+	    List<CabInfo> cabList = this.mongoTemplate.find(query, CabInfo.class);
+	    return cabList;
+
 	}
 
 	

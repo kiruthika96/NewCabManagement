@@ -23,10 +23,10 @@ public class ManageCabsInfoBL {
 	ManageCabsInfoRepository cabRepo;
 
 		
-	// call a DL method to find and return List of cab details which isDeleted field is '0'
+	// call a DL method to find and return List of cab details which isDeleted field is 0
 	public List<CabInfo> getAllCabDetails() {
 		
-		return this.cabInfoDl.findByIsDeleted('0');
+		return this.cabInfoDl.findByIsDeleted(0);
 	}
 	
 	//call a DL method to check driver availability
@@ -36,7 +36,7 @@ public class ManageCabsInfoBL {
 		Optional<CabInfo> entity = cabInfoDl.findByDriverId(id);
 		
 		//driver already present and he is assigned to a cab return false(driver is not available)
-		if(entity.isPresent() && !(entity.get().getCabNumber().equals(info.getCabNumber()))  && entity.get().getIsDeleted()=='0')
+		if(entity.isPresent() && !(entity.get().getCabNumber().equals(info.getCabNumber()))  && entity.get().getIsDeleted()== 0)
 			return false;
 		
 		
@@ -50,26 +50,26 @@ public class ManageCabsInfoBL {
 	
 	// call a DL method to find and return List of drivers
 	public List<DriverInfo> getAllDrivers() {
-		return this.cabInfoDl.findAllDrivers();
+		return this.cabInfoDl.findAllDrivers(0);
 	}
 	
-	//call a DL method to find and return List of cabModel which isDeleted field is '0' 
-	public List<CabInfo> getAllCabModels(char c) {
-		return this.cabInfoDl.findByIsDeleted(c);
+	//call a DL method to find and return List of cabModel which isDeleted field is 0
+	public List<CabInfo> getAllCabModels(int i) {
+		return this.cabInfoDl.findByIsDeleted(i);
 	}
 
 	//call a DL method to find and return the cab detail that matched a
-	//to the cab number & isDeleted field '0'
+	//to the cab number & isDeleted field 0
 	public Optional<CabInfo> getCabNumber(String cabNumber) {
-		return this.cabInfoDl.findByCabNumberAndIsDeleted(cabNumber,'0');
+		return this.cabInfoDl.findByCabNumberAndIsDeleted(cabNumber,0);
 	}
 
 	//call a DL method to find and return the cab detail that matched 
-	//to the insurance number & isDeleted field '0'
+	//to the insurance number & isDeleted field 0
 	public boolean getInsuranceNum(CabInfo cabInfoInsNum) {
 		
 			String InsNum=cabInfoInsNum.getInsuranceNumber();
-	    	Optional<CabInfo> EntityInsNum =cabInfoDl.findByInsuranceNumberAndIsDeleted(InsNum, '0');
+	    	Optional<CabInfo> EntityInsNum =cabInfoDl.findByInsuranceNumberAndIsDeleted(InsNum, 0);
     	
     	if(EntityInsNum.isPresent() && !(EntityInsNum.get().getCabNumber().equals(cabInfoInsNum.getCabNumber()))) 
     	{

@@ -1,7 +1,8 @@
 package com.example.demo.model;
 
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,16 +18,21 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level=AccessLevel.PRIVATE)
 
-@Document(collection = "driverInfo")
+@Document(collection = "DriverInfo")
 
 public class DriverInfo {
 
 	@Id
-	int driverId;
-	
+	long driverId;
 	String driverName;
+	String password;
 	long driverNumber;
 	String licenseNumber;
-	Date expiryDate;
-	
+	LocalDate licenseExpiryDate;
+	String createdBy;
+	LocalDateTime createdDate;
+	String modifiedBy;
+	LocalDateTime modifiedDate;
+	int isDeleted;
+		
 }
