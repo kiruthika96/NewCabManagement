@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -11,7 +11,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -205,15 +204,6 @@ public class ManageCabsInfoController {
 	    	CabInfo cabInfo=this.cabInfoBl.deleteCab(cabNumber);
 	    	
 	    	return ResponseEntity.status(HttpStatus.OK).body(cabInfo);
-	    }
-	    
-	    
-	    @GetMapping("/cab")
-	    public ResponseEntity<List<CabInfo>>findAll1(@Param("limit")int limit,@Param("skip")int skip){
-	       
-	        List<CabInfo> cabList=cabInfoDl.addDAO(limit, skip);
-	       return ResponseEntity.ok(cabList);
-	      
 	    }
 	    
 	    

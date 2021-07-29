@@ -1,12 +1,35 @@
 
- 												// fetching list of cab model and list out in the CabModel drop down
- 
+
         var xhrCabModel = new XMLHttpRequest();
-        var savingNewRecord = true; //boolean value to differentiate between saving a new record and editing an existing one
+        var xhrDriverInfo = new XMLHttpRequest();
+        var xhrCabDetails = new XMLHttpRequest();
+        var xhrSaveCabDetails = new XMLHttpRequest();
+        var xhrDeleteCabDetails = new XMLHttpRequest();
         
-
- 
-
+        
+        var savingNewRecord = true; //boolean value to differentiate between saving a new record and editing an existing one
+        var cabModels;
+		var date=new Date();
+	    var month = (date.getMonth()+1);
+	    var day = date.getDate();
+		var driverDetails;
+		var getDriverId;
+		var rowCounter; 
+		var ddloption ;
+ 		var capitalizedCabModel; 
+		var editId;
+		var editRow;
+		var driverId;
+		var driver; 
+		var delCab;
+		var delId;
+		var delrow; 
+		 
+		 
+		 
+		 
+		// fetching list of cab model and list out in the CabModel drop down	
+			 
  document.getElementById("pills-managecabs-tab").addEventListener('click',function(){
  event.preventDefault();
   xhrCabModel.open("GET","http://localhost:8080/all/cabModel",true);
@@ -16,7 +39,7 @@
     
  });
     
-    var cabModels;
+    
     
     function cabModelProcessResponse(){
             if(xhrCabModel.readyState == 4 && xhrCabModel.status == 200){
@@ -45,9 +68,7 @@
         
          // expiry date field           
   		// set expiry date field calender from today's(current) date
-	   var date=new Date();
-	   var month = (date.getMonth()+1);
-	   var day = date.getDate();
+	  
 	   if(month<10)
 	   {
 	   	month = "0"+month;
@@ -64,8 +85,6 @@
 
 // driver name autocompleted 
 
-var xhrDriverInfo = new XMLHttpRequest(); 
-
 document.getElementById("pills-managecabs-tab").addEventListener('click',function(){
  event.preventDefault();
   xhrDriverInfo.open("GET","http://localhost:8080/all/driverInfo",true);
@@ -75,7 +94,7 @@ document.getElementById("pills-managecabs-tab").addEventListener('click',functio
     
  });
  
- var driverDetails;
+
     
     function cabDriverInfoProcessResponse(){
             if(xhrDriverInfo.readyState == 4 && xhrDriverInfo.status == 200){ 
@@ -93,7 +112,7 @@ var drivNameInput = document.getElementById("driv-name");
 drivNameInput.addEventListener("input", searchForDriverName);
 
 var divElement = document.getElementById("suggestDiv");
-var getDriverId;
+
 
 function searchForDriverName() {
     getDriverId = undefined;
@@ -164,10 +183,6 @@ document.addEventListener("click", function(e) {
 															// Get all CabInfo and append into html page
 
 
- var xhrCabDetails = new XMLHttpRequest();
-
- 
-
  document.getElementById("pills-managecabs-tab").addEventListener('click',function(){
  event.preventDefault();
   xhrCabDetails.open("GET","http://localhost:8080/all/cabInfo",true);
@@ -177,7 +192,7 @@ document.addEventListener("click", function(e) {
     
  });
  
-		var rowCounter; 
+		
 		
     function cabInfoProcessResponse(){
   if(xhrCabDetails.readyState == 4 && xhrCabDetails.status == 200)
@@ -276,8 +291,7 @@ document.addEventListener("click", function(e) {
  																	//Add Cab Model popup 
  
  
- var ddloption ;
- var capitalizedCabModel;
+
  
  document.getElementById("addCabModel").addEventListener('click',function()
  {
@@ -304,7 +318,7 @@ document.addEventListener("click", function(e) {
 	for(var i = 0; i < ddloption.length; i++)	
 	{    if( ddloption[i].value === capitalizedCabModel)
 	    {   
-	        alert("CabModel already exist ");
+	        alert("CabModel already present in the drop down");
 	        return false;    
 l	    }    
 	}    
@@ -314,7 +328,7 @@ l	    }
   option.innerText=capitalizedCabModel;			  
   
   document.getElementById("cab-Model-Dropdown").appendChild(option); 	// append option to the dropdown
- 
+  alert("Cab Model added successfully in the drop down");
   
  });
 
@@ -323,10 +337,6 @@ l	    }
 
 
 													// Save Cab Info to the database
-
-
- 
- var xhrSaveCabDetails = new XMLHttpRequest();
 
 // check empty fields
 
@@ -372,7 +382,7 @@ l	    }
   
   function patternValidation(){
 	
-  const cabNumPattern= new RegExp("^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$");
+  const cabNumPattern=new RegExp("^[A-Z]{2}[ ][0-9]{2}[ ][A-Z]{2}[ ][0-9]{4}$");
   var cabNumTrue=cabNumPattern.test(document.getElementById("cab-num").value);
   
   if(!cabNumTrue){
@@ -380,7 +390,7 @@ l	    }
   return false;
   }
   
- if(document.getElementById("no-seats").value>=99 || document.getElementById("no-seats").value<4 ){
+ if(document.getElementById("no-seats").value>=99 || document.getElementById("no-seats").value<3 ){
   alert("Invalid Available number of seats");
   return false;
   }
@@ -468,7 +478,6 @@ l	    }
      alert("Cab Details saved successfully");
      getDriverId = undefined;
      funclear();
-     //location.reload();
    }
    
    //Cab number exit
@@ -495,10 +504,7 @@ l	    }
 
 /* -----------------------------------------------------------------------------------------------------------------------*/
 
-var editId;
-var editRow;
-var driverId;
-var driver;
+
 function editData(row){
 	
     savingNewRecord = false;
@@ -584,11 +590,7 @@ function funclear()
                 document.getElementById("insurance-num").value="";
                 document.getElementById("ins-exp-date").value=true;
                 document.getElementById("driv-name").value="";
-                
-                //document.location.reload(true);
-                //self.location.assign(window.location);
-    //location.replace(self.location.href)
-
+                               
             }
 
 function Reset() {
@@ -603,11 +605,7 @@ function Reset() {
  
 														 // Delete cab Details
  
- var xhrDeleteCabDetails = new XMLHttpRequest();
- var delCab;
-
-var delId;
- var delrow;
+ 
   function deleteCabDetails(){
   
  
@@ -631,7 +629,7 @@ var delId;
      delrow.remove(); //tr0
      alert("Cab Details deleted successfully");
    }
-   //location.reload();
+  
  }
 
 function deleteData(row){
@@ -674,7 +672,7 @@ function enterEventCabNum(event){
    
     if(!(document.getElementById("cab-num").value == undefined || document.getElementById("cab-num").value =="") && event.keyCode == 13){
        
-        const cabNumPattern= new RegExp("^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$");
+        const cabNumPattern=new RegExp("^[A-Z]{2}[ ][0-9]{2}[ ][A-Z]{2}[ ][0-9]{4}$");
   		var cabNumTrue=cabNumPattern.test(document.getElementById("cab-num").value);
   		
        if(!cabNumTrue){
@@ -703,7 +701,7 @@ function enterEventAvailableSeats(event){
    
     if(!(document.getElementById("no-seats").value == undefined || document.getElementById("no-seats").value =="") && event.keyCode == 13){
   		
-      if(document.getElementById("no-seats").value>=99 || document.getElementById("no-seats").value<4 ){
+      if(document.getElementById("no-seats").value>=99 || document.getElementById("no-seats").value<3 ){
   		alert("Invalid Available number of seats");
   		return false;
  		 }
@@ -751,34 +749,7 @@ function enterEventInsNum(event){
     }   
 }
 
-/*
-Enter Key Press Event for Expiry date field
 
-function enterEventExpDate(event){
-   
-    if(!(document.getElementById("ins-exp-date").value == undefined || document.getElementById("ins-exp-date").value =="") && event.keyCode == 13){
-  		
-  		if(document.getElementById("ins-exp-date").value < currentDate){
-			alert("Invalid expiry date");
-			return false;
-			}
-  		
-        document.getElementById("driv-name").focus(); 
-    }
-   
-    else{
-        
-        if(event.keyCode != 13){
-            document.getElementById("ins-exp-date").focus();
-        }
-        else{
-           
-            alert("Expiry date field cannot be empty");
-            return false;
-        }
-    }   
- }
-*/
 
 //Enter Key Press Event for Driver Name
 
@@ -801,7 +772,7 @@ function enterEventDriverName(event){
 		driverId=getDriverId;
 	}
         
-        document.getElementById("save").focus(); 
+        document.getElementById("saveCab").focus(); 
     }
    
     else{

@@ -1027,3 +1027,47 @@ padding: 10px 10px;
 {
 background-color: lightgray;
 }
+/**css for driver name search suggestions ends **/
+
+/** pagination start here **/    
+.pg-normal,
+    .pg-selected {
+      cursor: pointer;
+      text-align: left;
+      padding-top: 5px;
+      padding-right: 12px;
+      padding-bottom: 5px;
+      padding-left: 12px;
+      
+    }
+    
+    .pg-selected {
+      color: rgb(8, 8, 8);
+      border: 2px solid #bdbdf7;
+      text-align: left;
+      background-color: #ac9e9e;
+      padding-top: 5px;
+      padding-right: 12px;
+      padding-bottom: 5px;
+      padding-left: 12px;
+    }
+
+    span:hover {
+      background-color: #d4d3d3;
+      padding-top: 5px;
+      padding-right: 12px;
+      padding-bottom: 5px;
+      padding-left: 12px;
+    }
+
+   #pageNavPosition{
+       padding:15px 0px 0px 0px;
+   }
+
+   #showPage{
+    padding:15px 0px 0px 15px
+   }
+
+/** pagination ends here **/
+
+

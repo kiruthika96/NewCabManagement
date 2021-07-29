@@ -1,20 +1,7 @@
 package com.example.demo;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-
-import com.example.demo.model.CabInfo;
-import com.example.demo.model.DriverInfo;
-import com.example.demo.repository.ManageCabsInfoRepository;
-import com.example.demo.repository.ManageDriversInfoRepository;
-
 
 @SpringBootApplication
 public class ManageCabsInfoApplication {
@@ -22,32 +9,6 @@ public class ManageCabsInfoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ManageCabsInfoApplication.class, args);
 	}
-
-	/*
-	   @Bean
-	    public CommandLineRunner runner() {
-	       
-	        return new CommandLineRunner() { 
-	        	
-	            @Autowired
-	            ManageCabsInfoRepository cabRepo;
-          
-	            @Autowired
-	            ManageDriversInfoRepository driverRepo;
-            
-	            @SuppressWarnings("deprecation")
-	            @Override
-	            public void run(String... args) throws Exception{
-	           
-	               // Date date1 = new Date (11,28,2024, 0, 0);
-//                	DriverInfo driver1= new DriverInfo(111, "Shanthosh", null, 8976542323L, "HR-0520500035761", LocalDate.now(), "Admin", LocalDateTime.now(), null, null, 0);
-//	                this.driverRepo.save(driver1);
-	               
-//	                Date date2 = new Date (2022, 12, 21, 0, 0);
-//	                CabInfo cab1= new CabInfo("Tavera","TN 12 KL 1111",10,"12345678901234567890",date2,driver1);
-//	                this.cabRepo.save(cab1);
-            }
-        };
-    } */ 
+	
 }
 	

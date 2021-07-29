@@ -1,8 +1,7 @@
 package com.example.demo.Dl;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -124,18 +123,6 @@ public class ManageCabsInfoDL {
 	public Optional<CabInfo> findByInsuranceNumberAndIsDeleted(String insNum, int i) {
 		
 		return this.cabRepo.findByInsuranceNumberAndIsDeleted(insNum, i);
-	}
-
-
-	public List<CabInfo> addDAO(int limit, int skipCount) {
-		
-	   // List<CabInfo> list = new ArrayList<>();
-	    Query query=new Query();
-	    query.limit(limit).skip(skipCount);
-	    
-	    List<CabInfo> cabList = this.mongoTemplate.find(query, CabInfo.class);
-	    return cabList;
-
 	}
 
 	

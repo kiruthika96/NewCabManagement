@@ -53,24 +53,6 @@ public class CabInfo {
 		this.modifiedBy = modifiedBy;
 		this.modifiedDate = modifiedDate;
 		this.isDeleted = isDeleted;
-	}
-	
-//	public CabInfo(String cabModel, int availableSeats, String insuranceNumber,
-//			LocalDate insuranceExpiryDate, String driverName, int isDeleted, String createdBy, String modifiedBy,
-//			LocalDate createdDate, LocalDate modifiedDate) {
-//		super();
-//		this.cabModel = cabModel;
-//		this.availableSeats = availableSeats;
-//		this.insuranceNumber = insuranceNumber;
-//		this.insuranceExpiryDate = insuranceExpiryDate;
-//		this.driverName = driverName;
-//		this.isDeleted = isDeleted;
-//		this.createdBy = createdBy;
-//		this.modifiedBy = modifiedBy;
-//		this.createdDate = createdDate;
-//		this.modifiedDate = modifiedDate;
-//	}
-	
-	
+	}	
 	
 }
